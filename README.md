@@ -41,11 +41,11 @@ The desktop application (Tauri shell) wraps `laminar-core` and ships separately 
 
 | Document | Description |
 |----------|-------------|
-| [INVARIANTS.md](./docs/INVARIANTS.md) | The Laws of Physics—non-negotiable constraints |
-| [ARCHITECTURE.md](./docs/ARCHITECTURE.md) | System design and data flow |
-| [THREAT_MODEL.md](./docs/THREAT_MODEL.md) | Attackers, trust boundaries, mitigations |
-| [RFC-001.md](./docs/RFC-001.md) | Tactical Spike scope and acceptance criteria |
-| [CONSTANTS.md](./docs/CONSTANTS.md) | Reference values for implementation |
+| [INVARIANTS.md](INVARIANTS.md) | The Laws of Physics—non-negotiable constraints |
+| [ARCHITECTURE.md](ARCHITECTURE.md) | System design and data flow |
+| [THREAT_MODEL.md](THREAT_MODEL.md) | Attackers, trust boundaries, mitigations |
+| [RFC-001.md](RFC-001.md) | Tactical Spike scope and acceptance criteria |
+| [CONSTANTS.md](CONSTANTS.md) | Reference values for implementation |
 
 ## Quick Start
 
@@ -59,17 +59,17 @@ cargo run -p laminar-cli -- --input payroll.csv --output intent.txt
 
 ## Contributing
 
-Before writing code, internalize the [Invariants](./docs/INVARIANTS.md). Every PR is reviewed against them.
+Before writing code, internalize the [Invariants](INVARIANTS.md). Every PR is reviewed against them.
 
-See [CONTRIBUTING.md](./CONTRIBUTING.md) for development workflow.
+See [CONTRIBUTING.md](CONTRIBUTING.md) for development workflow.
 
 ## Security
 
-See [SECURITY.md](./SECURITY.md) for vulnerability reporting.
+See [SECURITY.md](SECURITY.md) for vulnerability reporting.
 
 ## License
 
-Dual-licensed under [MIT](./LICENSE-MIT) and [Apache 2.0](./LICENSE-APACHE).
+Dual-licensed under [MIT](LICENSE-MIT) and [Apache 2.0](LICENSE-APACHE).
 
 ---
 
