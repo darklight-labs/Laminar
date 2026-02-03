@@ -2,6 +2,7 @@
 
 > **Status:** ENFORCED  
 > **Scope:** All Laminar Components  
+> **Version:** 2.0 (Dual-Mode)  
 > **Violation:** IMMEDIATE REJECTION
 
 These invariants are structural constraints defining Laminar's security model and legal positioning. They cannot be relaxed for "convenience" or "UX." Every pull request must be reviewed against this list.
@@ -34,20 +35,7 @@ The mobile wallet is the sole signing authority. This ensures Laminar cannot be 
 
 ---
 
-## INV-03: Network Isolation
-
-**Laminar NEVER broadcasts transactions to the Zcash network.**
-
-The final output is a ZIP-321 URI or UR-encoded QR. Broadcasting is the operator's sovereign responsibility via external tools.
-
-**Enforcement:**
-- No peer-to-peer network code
-- No RPC client implementations
-- Network stack limited to local IPC (Tauri bridge)
-
----
-
-## INV-04: Zatoshi Standard
+## INV-03: Zatoshi Standard
 
 **ALL monetary arithmetic uses integer zatoshis (`u64`/`bigint`). Floating-point is PROHIBITED.**
 
@@ -64,71 +52,20 @@ This prevents rounding errors that could cause transaction failures or fund loss
 
 ---
 
-## INV-05: Schema Validation
+## INV-04: Deterministic Output
 
-**All cross-boundary data MUST be validated against versioned schemas.**
+**Given identical input, Laminar MUST produce byte-identical output.**
 
-No raw JSON parsing. All external input passes through typed validators before processing.
+Same CSV + same configuration = same QR codes, same receipt JSON. No randomness in transaction construction. This enables verification and debugging.
 
 **Enforcement:**
-- Rust: `serde` with custom deserializers
-- TypeScript: Zod schemas at every boundary
-- Schema versions embedded in serialized data
+- No random number generation in core logic
+- Canonical serialization (sorted keys, consistent encoding)
+- Snapshot tests verify determinism
 
 ---
 
-## INV-06: Field Encryption
-
-**Sensitive IndexedDB fields MUST be encrypted with the session key.**
-
-Encrypted fields: `Contact.label`, `Contact.notes`, `Draft.recipients[].memo`
-
-**Enforcement:**
-- AES-256-GCM encryption for sensitive fields
-- Key derived via PBKDF2 (100k iterations) from passphrase
-- Encryption verified in integration tests
-
----
-
-## INV-07: Memo Encoding
-
-**Memos encoded as UTF-8 bytes → standard base64. Maximum 512 bytes.**
-
-The 512-byte limit is a Zcash protocol constraint. Violations cause transaction rejection.
-
-**Enforcement:**
-- Byte length check before encoding
-- Reject (not truncate) oversized memos
-- Schema validation at ingestion
-
----
-
-## INV-08: Handoff Conformance
-
-**Handoff results MUST conform to the `HandoffResult` schema.**
-
-All wallet interactions produce structured, versioned results for audit trail.
-
-**Enforcement:**
-- Schema validation on handoff completion
-- Required fields: `schemaVersion`, `status`, `mode`, `timestamp`, `intentId`
-
----
-
-## INV-09: Zero Telemetry
-
-**No telemetry. No analytics. No external network requests.**
-
-Laminar operates in adversarial environments. Any data exfiltration is a critical vulnerability.
-
-**Enforcement:**
-- CSP blocks external connections
-- No analytics libraries in dependency tree
-- Network traffic audited during security review
-
----
-
-## INV-10: Fail-Fast Validation
+## INV-05: Fail-Fast Validation
 
 **If ANY row fails validation, the ENTIRE batch is rejected. No partial processing.**
 
@@ -141,19 +78,95 @@ This prevents scenarios where treasurers unknowingly send incomplete payrolls.
 
 ---
 
-## Invariant Verification
+## INV-06: Modal Determinism
+
+**The CLI MUST behave identically in Agent mode regardless of invocation method.**
+
+Whether triggered by `--output json` flag or pipe detection, the output format and behavior MUST be identical. Mode detection MUST be deterministic and testable.
+
+**Mode Detection Logic:**
+```rust
+if stdout.is_terminal() && !args.output_json {
+    Mode::Operator
+} else {
+    Mode::Agent
+}
+```
+
+**Enforcement:**
+- Mode selection logic centralized in single function
+- Test suite includes explicit tests for both TTY and pipe scenarios
+- CI runs tests with both invocation methods
+
+---
+
+## INV-07: Non-Blocking Agent Mode
+
+**In Agent mode, the CLI MUST NEVER block waiting for user input.**
+
+Any operation requiring confirmation MUST either proceed automatically (with `--force`) or fail immediately with a specific error code. Infinite loops and stdin reads are prohibited.
+
+**Enforcement:**
+- Agent mode code paths statically analyzed to ensure no stdin reads
+- Integration tests verify timeout behavior
+- Missing required flags result in immediate exit with documented error codes:
+  - `E010`: Missing required argument
+  - `E011`: Confirmation required (use `--force`)
+
+---
+
+## INV-08: Schema Validation
+
+**All cross-boundary data MUST be validated against versioned schemas.**
+
+No raw JSON parsing. All external input passes through typed validators before processing.
+
+**Enforcement:**
+- Rust: `serde` with custom deserializers
+- TypeScript: Zod schemas at every boundary
+- Schema versions embedded in serialized data
+
+---
+
+## INV-09: Field Encryption
+
+**Sensitive IndexedDB fields MUST be encrypted with the session key.**
+
+Encrypted fields: `Contact.label`, `Contact.notes`, `Draft.recipients[].memo`
+
+**Enforcement:**
+- AES-256-GCM encryption for sensitive fields
+- Key derived via Argon2id from passphrase
+- Encryption verified in integration tests
+
+---
+
+## INV-10: Zero Telemetry
+
+**No telemetry. No analytics. No external network requests.**
+
+Laminar operates in adversarial environments. Any data exfiltration is a critical vulnerability.
+
+**Enforcement:**
+- CSP blocks external connections
+- No analytics libraries in dependency tree
+- Network traffic audited during security review
+
+---
+
+## Invariant Verification Checklist
 
 During code review, verify each change against:
 
 ```
 [ ] INV-01: No key material handling
 [ ] INV-02: No signing operations
-[ ] INV-03: No network broadcast
-[ ] INV-04: Integer-only monetary math
-[ ] INV-05: Schema validation at boundaries
-[ ] INV-06: Sensitive fields encrypted
-[ ] INV-07: Memo encoding correct
-[ ] INV-08: Handoff results conform
-[ ] INV-09: No telemetry/analytics
-[ ] INV-10: Fail-fast on validation errors
+[ ] INV-03: Integer-only monetary math (Zatoshi Standard)
+[ ] INV-04: Deterministic output
+[ ] INV-05: Fail-fast on validation errors
+[ ] INV-06: Modal determinism (CLI modes identical)
+[ ] INV-07: Non-blocking agent mode
+[ ] INV-08: Schema validation at boundaries
+[ ] INV-09: Sensitive fields encrypted
+[ ] INV-10: No telemetry/analytics
 ```
