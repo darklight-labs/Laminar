@@ -60,9 +60,56 @@ The CLI adapts based on execution context:
 | Human | Terminal (TTY) | Spinners, tables, colors, confirmations |
 | Agent | Piped or `--output json` | Silent, strict JSON, non-interactive |
 
-## Prerequisites
-- Rust toolchain (stable) with `cargo`
-- Git Bash or WSL if you want to run the bash demo scripts on Windows
+## Setup (Beginner-Friendly)
+These steps assume you have not used GitHub or Rust before. If you are already comfortable with Rust, feel free to jump to the **Build** section.
+
+### 1) Get the code
+Pick one of the two options below.
+
+**Option A: GitHub Desktop (no command line)**
+1. Install GitHub Desktop from the official GitHub site.
+2. Click **File → Clone Repository…**
+3. Paste the repository URL and choose a local folder.
+4. Click **Clone**.
+
+**Option B: Command line (Git)**
+1. Install Git from the official site.
+2. Open a terminal and run:
+```bash
+git clone <REPO_URL>
+cd laminar
+```
+
+### 2) Install Rust (required)
+Laminar is written in Rust. Install the stable toolchain:
+- **Windows / macOS / Linux**: Use `rustup` from the official Rust site.
+- After install, open a new terminal and confirm:
+```bash
+rustc --version
+cargo --version
+```
+
+### 3) Optional: Bash scripts on Windows
+The demo scripts in `demo/` are written for bash.
+- If you are on Windows, install **Git Bash** or **WSL** to run them.
+- If you prefer not to use bash, you can still run everything using the Rust commands in this README.
+
+### 4) Build and test (recommended)
+```bash
+cargo build --release
+cargo test
+```
+
+If those commands succeed, your setup is complete.
+
+## Quick Start (Experienced Users)
+```bash
+git clone <REPO_URL>
+cd laminar
+rustup default stable
+cargo build --release
+cargo run --release -p laminar-cli -- --input ./demo/payroll.csv --force
+```
 
 ## Build
 ```bash
