@@ -1,0 +1,6 @@
+﻿address,amount,memo
+,10.00,Missing address
+x1notzcashprefix,1.00,Bad prefix
+u1qbaddecimals,0.000000001,Too many decimals
+u1qnegative,-1.00,Negative not allowed
+u1qzero,0,Zero not allowed
