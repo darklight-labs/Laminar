@@ -29,6 +29,7 @@ Laminar constructs payment intents. It does not hold keys and does not broadcast
 - [ARCHITECTURE.md](./ARCHITECTURE.md): Current architecture and data flow
 - [CONSTANTS.md](./CONSTANTS.md): Reference constants used in this repo
 - [RFC-001.md](./RFC-001.md): Tactical spike scope and current status
+- [ROADMAP.md](./ROADMAP.md): Future scope and phased vision
 - [THREAT_MODEL.md](./THREAT_MODEL.md): Threats and mitigations for the tracer bullet
 - [SECURITY.md](./SECURITY.md): Vulnerability reporting policy
 - [CONTRIBUTING.md](./CONTRIBUTING.md): Development workflow and PR checklist
