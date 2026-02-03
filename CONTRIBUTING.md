@@ -3,95 +3,53 @@
 Thank you for your interest in contributing to Laminar.
 
 ## Before You Start
-
-1. **Read the Invariants:** Every contribution must comply with [INVARIANTS.md](INVARIANTS.md). These are non-negotiable.
-
-2. **Understand the Architecture:** Review [ARCHITECTURE.md](ARCHITECTURE.md) to understand system design.
-
-3. **Check the Scope:** Review [RFC-001.md](RFC-001.md) to understand what's in scope for Phase 1.
+1. Read the invariants in `INVARIANTS.md`.
+2. Review the current architecture in `ARCHITECTURE.md`.
+3. Check the tracer-bullet scope in `RFC-001.md`.
 
 ## Development Setup
-
 ### Prerequisites
-
-- Rust (stable, latest)
+- Rust (stable)
 - Cargo
 
 ### Building
-
 ```bash
-# Clone the repository
-git clone https://github.com/darklight-labs/Laminar.git
-cd Laminar
-
-# Build the workspace
 cargo build
-
-# Run tests
-cargo test
-
-# Run the CLI
-cargo run -p laminar-cli -- info
 ```
 
-### Code Style
+### Testing
+```bash
+cargo test
+```
 
-- Follow `rustfmt` defaults: `cargo fmt`
-- Pass `clippy` with no warnings: `cargo clippy -- -D warnings`
-- No floating-point arithmetic on monetary values (INV-04)
-- All errors via `Result<T, LaminarError>`—no panics in library code
+### Linting
+```bash
+cargo clippy -- -D warnings
+```
+
+## CLI Usage (Current)
+```bash
+cargo run --release -p laminar-cli -- --input ./demo/payroll.csv --force
+cargo run --release -p laminar-cli -- --input ./demo/payroll.csv --output json --force
+```
 
 ## Pull Request Process
-
-1. **Fork and Branch:** Create a feature branch from `main`
-
-2. **Invariant Checklist:** Include this in your PR description:
-   ```
-   [ ] INV-01: No key material handling
-   [ ] INV-02: No signing operations
-   [ ] INV-03: No network broadcast
-   [ ] INV-04: Integer-only monetary math
-   [ ] INV-05: Schema validation at boundaries
-   [ ] INV-06: Sensitive fields encrypted
-   [ ] INV-07: Memo encoding correct
-   [ ] INV-08: Handoff results conform
-   [ ] INV-09: No telemetry/analytics
-   [ ] INV-10: Fail-fast on validation errors
-   ```
-
-3. **Tests:** Add tests for new functionality. Maintain >80% coverage for `laminar-core`.
-
-4. **Documentation:** Update relevant docs if behavior changes.
-
-5. **CI Green:** All checks must pass before merge.
+1. Create a feature branch from `main`.
+2. Ensure invariants are preserved.
+3. Add or update tests when behavior changes.
+4. Update docs if user-facing behavior changes.
 
 ## Commit Messages
-
 Use conventional commits:
-
 ```
-feat(core): add ZIP-321 construction logic
-fix(cli): handle UTF-8 BOM in CSV files
-docs: update ARCHITECTURE.md with new module
-test: add property tests for zatoshi parsing
+feat(core): add parser edge case
+fix(cli): correct agent error output
+docs: update architecture notes
 ```
-
-## Issue Reporting
-
-- **Bugs:** Include reproduction steps, expected vs actual behavior
-- **Features:** Reference the roadmap (RFC-001) and explain alignment
-- **Security:** See [SECURITY.md](SECURITY.md)—do not create public issues
 
 ## Code Review
-
-All PRs require review. Reviewers will check:
-
-1. Invariant compliance
-2. Test coverage
-3. Documentation updates
-4. Code style
-5. Security implications
-
-## License
-
-By contributing, you agree that your contributions will be licensed under the MIT and Apache 2.0 licenses.
+Reviewers will check:
+- Invariant compliance
+- Test coverage
+- Documentation updates
+- Security implications

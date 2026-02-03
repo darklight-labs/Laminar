@@ -1,6 +1,6 @@
-﻿# Demo Assets
+# Demo Assets
 
-This folder contains sample CSVs and bash scripts used to validate the tracer-bullet flow.
+This folder contains sample CSVs and scripts used to validate the tracer-bullet flow.
 
 ## Files
 - `payroll.csv`: valid sample batch with various decimal formats.
@@ -11,3 +11,9 @@ This folder contains sample CSVs and bash scripts used to validate the tracer-bu
 ## Notes
 - Scripts require bash (Git Bash or WSL on Windows).
 - If you are using Windows `cmd.exe`, see the root `README.md` for equivalent commands.
+
+## Windows cmd quick run
+```cmd
+cargo run --release -p laminar-cli -- --input .\demo\payroll.csv --force
+cargo run --release -p laminar-cli -- --input .\demo\payroll.csv --output json --force
+```

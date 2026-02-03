@@ -4,6 +4,15 @@ Laminar Tracer Bullet (v0.0.1-alpha) is a minimal, end-to-end steel thread for C
 
 Laminar constructs payment intents. It does not hold keys and does not broadcast transactions.
 
+## What This Repo Is
+- A deterministic CLI and core library for CSV batch parsing and intent construction
+- A tracer bullet that proves zatoshi-only math and dual-mode output
+
+## What This Repo Is Not
+- A wallet
+- A transaction broadcaster
+- A QR/UR generator
+
 ## Scope (This Repo)
 - CSV ingest and validation
 - ZEC decimal parsing into zatoshis (u64, no floats)
@@ -14,6 +23,16 @@ Laminar constructs payment intents. It does not hold keys and does not broadcast
 - `laminar-core`: parsing, validation, shared types
 - `laminar-cli`: CLI with human vs agent modes
 - `demo/`: sample CSVs and scripts
+
+## Documentation
+- [INVARIANTS.md](./INVARIANTS.md): Non-negotiable rules and tracer-bullet subset
+- [ARCHITECTURE.md](./ARCHITECTURE.md): Current architecture and data flow
+- [CONSTANTS.md](./CONSTANTS.md): Reference constants used in this repo
+- [RFC-001.md](./RFC-001.md): Tactical spike scope and current status
+- [THREAT_MODEL.md](./THREAT_MODEL.md): Threats and mitigations for the tracer bullet
+- [SECURITY.md](./SECURITY.md): Vulnerability reporting policy
+- [CONTRIBUTING.md](./CONTRIBUTING.md): Development workflow and PR checklist
+- [demo/README.md](./demo/README.md): Demo assets overview
 
 ## Repository Map
 - [Cargo.toml](./Cargo.toml): Workspace definition.
@@ -27,7 +46,6 @@ Laminar constructs payment intents. It does not hold keys and does not broadcast
 - [laminar-core/src/validation.rs](./laminar-core/src/validation.rs): Address validation rules.
 - [laminar-cli/Cargo.toml](./laminar-cli/Cargo.toml): CLI crate manifest.
 - [laminar-cli/src/main.rs](./laminar-cli/src/main.rs): CLI entry point and dual-mode behavior.
-- [demo/README.md](./demo/README.md): Demo assets overview.
 - [demo/payroll.csv](./demo/payroll.csv): Valid sample batch.
 - [demo/invalid.csv](./demo/invalid.csv): Invalid sample batch for fail-fast validation.
 - [demo/run_demo.sh](./demo/run_demo.sh): End-to-end demo script.
