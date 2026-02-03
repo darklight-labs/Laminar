@@ -15,6 +15,24 @@ Laminar constructs payment intents. It does not hold keys and does not broadcast
 - `laminar-cli`: CLI with human vs agent modes
 - `demo/`: sample CSVs and scripts
 
+## Repository Map
+- [Cargo.toml](Cargo.toml): Workspace definition.
+- [Cargo.lock](Cargo.lock): Locked dependency graph for reproducible builds.
+- [.gitignore](.gitignore): Ignores build artifacts and local test outputs.
+- [laminar-core/Cargo.toml](laminar-core/Cargo.toml): Core crate manifest.
+- [laminar-core/src/lib.rs](laminar-core/src/lib.rs): Core module exports.
+- [laminar-core/src/types.rs](laminar-core/src/types.rs): Shared data types and intent schema.
+- [laminar-core/src/output.rs](laminar-core/src/output.rs): Human/agent output helpers and formatting.
+- [laminar-core/src/parser.rs](laminar-core/src/parser.rs): ZEC decimal parsing to zatoshis.
+- [laminar-core/src/validation.rs](laminar-core/src/validation.rs): Address validation rules.
+- [laminar-cli/Cargo.toml](laminar-cli/Cargo.toml): CLI crate manifest.
+- [laminar-cli/src/main.rs](laminar-cli/src/main.rs): CLI entry point and dual-mode behavior.
+- [demo/README.md](demo/README.md): Demo assets overview.
+- [demo/payroll.csv](demo/payroll.csv): Valid sample batch.
+- [demo/invalid.csv](demo/invalid.csv): Invalid sample batch for fail-fast validation.
+- [demo/run_demo.sh](demo/run_demo.sh): End-to-end demo script.
+- [demo/agent_test.sh](demo/agent_test.sh): Agent-mode regression checks.
+
 ## Dual-Mode CLI
 The CLI adapts based on execution context:
 
