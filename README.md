@@ -1,114 +1,105 @@
-# LAMINAR
+# Laminar
 
-**Operational Command Console for the Zcash Shielded Economy**
+Laminar Tracer Bullet (v0.0.1-alpha) is a minimal, end-to-end steel thread for CSV -> parse -> validate -> construct intent -> output. It enforces zatoshi-precision arithmetic and dual-mode output for human operators and automated agents.
 
-> Status: `PHASE 1 — TACTICAL SPIKE`  
-> Version: `2.0 (Dual-Mode)`  
-> Forge: Darklight Labs
+Laminar constructs payment intents. It does not hold keys and does not broadcast transactions.
 
----
+## Scope (This Repo)
+- CSV ingest and validation
+- ZEC decimal parsing into zatoshis (u64, no floats)
+- Intent construction as JSON
+- Dual-mode CLI output (TTY vs non-interactive)
 
-Laminar is a professional-grade transaction construction engine for Zcash treasury operations. It bridges the "Spreadsheet Gap"—the tooling void between CSV payroll data and shielded blockchain execution.
-
-**Laminar is not a wallet.** It constructs Payment Intents. Your mobile wallet signs and broadcasts.
-
-## The Problem
-
-Zcash organizations manage disbursements with spreadsheets and manual copy-paste into mobile wallets. A 50-person payroll takes hours. Keys touch hot machines. No audit trail exists. Existing tools cannot be driven by AI agents.
-
-## The Solution
-
-Laminar separates **Authority** (keys) from **Intent** (construction):
-
-1. Import CSV → Validate → Construct ZIP-321 payment request
-2. Display as QR code (static or animated UR)
-3. Scan with mobile wallet (Zashi/YWallet)
-4. Wallet signs and broadcasts—keys never leave the device
-
-**Result:** 50-recipient batch in under 5 minutes. Air-gapped. Auditable. **Agent-compatible.**
+## Workspace Layout
+- `laminar-core`: parsing, validation, shared types
+- `laminar-cli`: CLI with human vs agent modes
+- `demo/`: sample CSVs and scripts
 
 ## Dual-Mode CLI
-
-The `laminar-cli` automatically adapts its interface based on execution context:
+The CLI adapts based on execution context:
 
 | Mode | Trigger | Behavior |
 |------|---------|----------|
-| **Operator** | Terminal (TTY) | Spinners, tables, colors, confirmations |
-| **Agent** | Piped or `--output json` | Silent, strict JSON, non-interactive |
+| Human | Terminal (TTY) | Spinners, tables, colors, confirmations |
+| Agent | Piped or `--output json` | Silent, strict JSON, non-interactive |
 
+## Prerequisites
+- Rust toolchain (stable) with `cargo`
+- Git Bash or WSL if you want to run the bash demo scripts on Windows
+
+## Build
 ```bash
-# Human operator (interactive)
-laminar construct --input payroll.csv
-
-# Software agent (JSON output)
-laminar construct --input payroll.csv --output json | jq '.result.zip321_uri'
-```
-
-## Architecture
-
-This repository is a Rust workspace:
-
-| Crate | Purpose |
-|-------|---------|
-| `laminar-core` | Stateless library—validation, construction, encoding |
-| `laminar-cli` | Dual-mode CLI for batch processing |
-
-The desktop application (Tauri shell) wraps `laminar-core` and ships separately during Phase 1.
-
-## Documentation
-
-| Document | Description |
-|----------|-------------|
-| [INVARIANTS.md](INVARIANTS.md) | The Laws of Physics—non-negotiable constraints |
-| [ARCHITECTURE.md](ARCHITECTURE.md) | System design and data flow |
-| [THREAT_MODEL.md](THREAT_MODEL.md) | Attackers, trust boundaries, mitigations |
-| [RFC-001.md](RFC-001.md) | Tactical Spike scope and acceptance criteria |
-| [CONSTANTS.md](CONSTANTS.md) | Reference values for implementation |
-
-## Quick Start
-
-```bash
-# Build the workspace
 cargo build --release
-
-# Run CLI in Operator mode (human)
-cargo run -p laminar-cli -- construct --input payroll.csv
-
-# Run CLI in Agent mode (machine)
-cargo run -p laminar-cli -- construct --input payroll.csv --output json
 ```
 
-## CLI Commands
-
+## Test
 ```bash
-laminar construct --input <file>    # Build payment request from CSV
-laminar validate --input <file>     # Validate CSV without constructing
-laminar info                        # Display version and constants
+cargo test
 ```
 
-### Flags
+## Lint
+```bash
+cargo clippy -- -D warnings
+```
 
-| Flag | Description |
-|------|-------------|
-| `--output json` | Force Agent mode (JSON output) |
-| `--interactive` | Force Operator mode (for testing) |
-| `--force` | Bypass confirmation prompts |
-| `--network <net>` | Target network (mainnet/testnet) |
+## Run (Human Mode)
+Human mode activates when stdout is a TTY.
+```bash
+cargo run --release -p laminar-cli -- --input ./demo/payroll.csv --force
+```
 
-## Contributing
+If you omit `--force`, you will be prompted to confirm before intent construction.
 
-Before writing code, internalize the [Invariants](INVARIANTS.md). Every PR is reviewed against them.
+## Run (Agent Mode)
+Agent mode activates when stdout is a pipe or when `--output json` is set.
 
-See [CONTRIBUTING.md](CONTRIBUTING.md) for development workflow.
+Forced JSON:
+```bash
+cargo run --release -p laminar-cli -- --input ./demo/payroll.csv --output json --force
+```
 
-## Security
+Auto via pipe:
+```bash
+cargo run --release -p laminar-cli -- --input ./demo/payroll.csv --force | cat
+```
 
-See [SECURITY.md](SECURITY.md) for vulnerability reporting.
+Agent-mode confirmation guard (expected error/exit code 2):
+```bash
+cargo run --release -p laminar-cli -- --input ./demo/payroll.csv --output json
+```
+
+## Fail-Fast Validation
+Invalid batch should emit JSON error and exit code 1:
+```bash
+cargo run --release -p laminar-cli -- --input ./demo/invalid.csv --output json --force
+```
+
+## CSV Format
+Input CSV requires a header row with these columns:
+- `address`: recipient address (prefix validation only in this tracer bullet)
+- `amount`: decimal ZEC string (up to 8 decimals)
+- `memo`: optional memo string
+
+Example:
+```csv
+address,amount,memo
+u1qexample...,10.50,January payroll
+```
+
+## Demo Scripts (bash)
+```bash
+./demo/run_demo.sh
+./demo/agent_test.sh
+```
+
+## Windows cmd equivalents
+If you are using `cmd.exe`, replace `cat` with `more` and use backslashes in paths:
+```cmd
+cargo run --release -p laminar-cli -- --input .\demo\payroll.csv --force | more
+```
+
+## Project Status
+This repository is a tracer bullet for the Laminar concept. It focuses on correctness and deterministic output rather than full wallet integration or QR/UR encoding.
 
 ## License
-
-Dual-licensed under [MIT](LICENSE-MIT) and [Apache 2.0](LICENSE-APACHE).
-
----
-
-**Darklight Labs** · Applied Privacy Infrastructure
+Dual-licensed under MIT and Apache 2.0.
