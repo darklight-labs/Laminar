@@ -3,6 +3,7 @@
 **Operational Command Console for the Zcash Shielded Economy**
 
 > Status: `PHASE 1 — TACTICAL SPIKE`  
+> Version: `2.0 (Dual-Mode)`  
 > Forge: Darklight Labs
 
 ---
@@ -13,7 +14,7 @@ Laminar is a professional-grade transaction construction engine for Zcash treasu
 
 ## The Problem
 
-Zcash organizations manage disbursements with spreadsheets and manual copy-paste into mobile wallets. A 50-person payroll takes hours. Keys touch hot machines. No audit trail exists.
+Zcash organizations manage disbursements with spreadsheets and manual copy-paste into mobile wallets. A 50-person payroll takes hours. Keys touch hot machines. No audit trail exists. Existing tools cannot be driven by AI agents.
 
 ## The Solution
 
@@ -24,7 +25,24 @@ Laminar separates **Authority** (keys) from **Intent** (construction):
 3. Scan with mobile wallet (Zashi/YWallet)
 4. Wallet signs and broadcasts—keys never leave the device
 
-**Result:** 50-recipient batch in under 5 minutes. Air-gapped. Auditable.
+**Result:** 50-recipient batch in under 5 minutes. Air-gapped. Auditable. **Agent-compatible.**
+
+## Dual-Mode CLI
+
+The `laminar-cli` automatically adapts its interface based on execution context:
+
+| Mode | Trigger | Behavior |
+|------|---------|----------|
+| **Operator** | Terminal (TTY) | Spinners, tables, colors, confirmations |
+| **Agent** | Piped or `--output json` | Silent, strict JSON, non-interactive |
+
+```bash
+# Human operator (interactive)
+laminar construct --input payroll.csv
+
+# Software agent (JSON output)
+laminar construct --input payroll.csv --output json | jq '.result.zip321_uri'
+```
 
 ## Architecture
 
@@ -33,7 +51,7 @@ This repository is a Rust workspace:
 | Crate | Purpose |
 |-------|---------|
 | `laminar-core` | Stateless library—validation, construction, encoding |
-| `laminar-cli` | Reference CLI for batch processing |
+| `laminar-cli` | Dual-mode CLI for batch processing |
 
 The desktop application (Tauri shell) wraps `laminar-core` and ships separately during Phase 1.
 
@@ -53,9 +71,29 @@ The desktop application (Tauri shell) wraps `laminar-core` and ships separately 
 # Build the workspace
 cargo build --release
 
-# Run CLI (once implemented)
-cargo run -p laminar-cli -- --input payroll.csv --output intent.txt
+# Run CLI in Operator mode (human)
+cargo run -p laminar-cli -- construct --input payroll.csv
+
+# Run CLI in Agent mode (machine)
+cargo run -p laminar-cli -- construct --input payroll.csv --output json
 ```
+
+## CLI Commands
+
+```bash
+laminar construct --input <file>    # Build payment request from CSV
+laminar validate --input <file>     # Validate CSV without constructing
+laminar info                        # Display version and constants
+```
+
+### Flags
+
+| Flag | Description |
+|------|-------------|
+| `--output json` | Force Agent mode (JSON output) |
+| `--interactive` | Force Operator mode (for testing) |
+| `--force` | Bypass confirmation prompts |
+| `--network <net>` | Target network (mainnet/testnet) |
 
 ## Contributing
 
