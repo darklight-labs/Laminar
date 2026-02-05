@@ -94,7 +94,7 @@ fn human_header(title: &str) {
         "{}",
         "╔═══════════════════════════════════════════════════════════════╗".bright_white()
     );
-    println!("{}", format!("║ {:<61}║", title).bright_white());
+    println!("{}", format!("║  {:<61}║", title).bright_white());
     println!(
         "{}",
         "╚═══════════════════════════════════════════════════════════════╝".bright_white()
