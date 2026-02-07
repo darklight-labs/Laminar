@@ -13,8 +13,8 @@ use indicatif::{ProgressBar, ProgressStyle};
 use is_terminal::IsTerminal;
 
 use laminar_core::{
-    format_zat_as_zec, parse_zec_to_zat, truncate_address, validate_address, AgentError, Network,
-    OutputMode, Recipient, RowIssue, TransactionIntent,
+    format_zat_as_zec, parse_zec_to_zat, truncate_address, validate_address, validate_memo,
+    AgentError, Network, OutputMode, Recipient, RowIssue, TransactionIntent,
 };
 
 #[derive(Debug, Clone, Copy, ValueEnum)]
@@ -227,6 +227,16 @@ fn main() -> Result<()> {
         let address = record.get(0).unwrap_or("").trim().to_string();
         let amount_str = record.get(1).unwrap_or("").trim().to_string();
         let memo_str = record.get(2).unwrap_or("").trim().to_string();
+
+        if !memo_str.is_empty() {
+            if let Err(e) = validate_memo(&memo_str) {
+                issues.push(RowIssue {
+                    row: row_num,
+                    field: "memo".to_string(),
+                    message: e.to_string(),
+                });
+            }
+        }
 
         if let Err(e) = validate_address(&address) {
             issues.push(RowIssue {

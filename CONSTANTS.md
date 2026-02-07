@@ -9,5 +9,8 @@ This file documents constants used in the tracer-bullet implementation.
 ## Intent Schema
 - `schema_version = "1.0"` (laminar-cli/src/main.rs)
 
+## Validation
+- `MAX_MEMO_BYTES = 512` (laminar-core/src/validation.rs)
+
 ## Output
 - ZEC formatting uses a minimum of 2 decimal places (laminar-core/src/output.rs)

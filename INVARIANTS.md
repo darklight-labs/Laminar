@@ -31,3 +31,7 @@ These are the non-negotiable rules for the tracer-bullet implementation. The bro
 ## FR-702 Confirmation
 - Human mode prompts before intent construction unless `--force` is set.
 - Agent mode requires `--force` or exits with code 2 and JSON error.
+
+## INV-07 Memo Byte Limit
+- Memo fields must be UTF-8 and <= 512 bytes.
+- Over-limit memos fail validation with error `E1004 MEMO_TOO_LONG`.
