@@ -39,6 +39,7 @@ Laminar constructs payment intents. It does not hold keys and does not broadcast
 - [Cargo.toml](./Cargo.toml): Workspace definition.
 - [Cargo.lock](./Cargo.lock): Locked dependency graph for reproducible builds.
 - [.gitignore](./.gitignore): Ignores build artifacts and local test outputs.
+- [.gitattributes](./.gitattributes): Normalizes text line endings (LF for shell scripts).
 - [laminar-core/Cargo.toml](./laminar-core/Cargo.toml): Core crate manifest.
 - [laminar-core/src/lib.rs](./laminar-core/src/lib.rs): Core module exports.
 - [laminar-core/src/types.rs](./laminar-core/src/types.rs): Shared data types and intent schema.
@@ -160,7 +161,7 @@ cargo run --release -p laminar-cli -- --input ./demo/invalid.csv --output json -
 
 ## CSV Format
 Input CSV requires a header row with these columns:
-- `address`: recipient address (prefix validation only in this tracer bullet)
+- `address`: recipient address (ASCII only; network-aware prefix validation in this tracer bullet)
 - `amount`: decimal ZEC string (up to 8 decimals)
 - `memo`: optional memo string
 

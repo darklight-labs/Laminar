@@ -23,3 +23,7 @@ is-terminal = "0.4"
 colored = "2.1"
 comfy-table = "7.1"
 indicatif = "0.17"
+
+[dev-dependencies]
+assert_cmd = "2.0"
+tempfile = "3.10"

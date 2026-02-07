@@ -1,4 +1,4 @@
-﻿//! Laminar CLI entry point: CSV -> parse -> validate -> intent -> output.
+//! Laminar CLI entry point: CSV -> parse -> validate -> intent -> output.
 
 use std::fs::File;
 use std::io::{self, BufRead, Write};
@@ -212,6 +212,7 @@ fn main() -> Result<()> {
 
     for (i, result) in rdr.records().enumerate() {
         let row_num = i + 2;
+        let row_issue_start = issues.len();
         let record = match result {
             Ok(r) => r,
             Err(e) => {
@@ -238,7 +239,7 @@ fn main() -> Result<()> {
             }
         }
 
-        if let Err(e) = validate_address(&address) {
+        if let Err(e) = validate_address(&address, network) {
             issues.push(RowIssue {
                 row: row_num,
                 field: "address".to_string(),
@@ -258,7 +259,7 @@ fn main() -> Result<()> {
             }
         };
 
-        if amount_zat == 0 && !amount_str.is_empty() {
+        if issues.len() == row_issue_start && amount_zat == 0 {
             issues.push(RowIssue {
                 row: row_num,
                 field: "amount".to_string(),
@@ -266,13 +267,17 @@ fn main() -> Result<()> {
             });
         }
 
-        // Only accumulate valid rows; we emit nothing if any issue exists.
-        if issues.is_empty() {
+        // Accumulate only rows that introduced no validation issues.
+        if issues.len() == row_issue_start {
             total_zat = total_zat
                 .checked_add(amount_zat)
                 .context("total amount overflow")?;
 
-            let memo = if memo_str.is_empty() { None } else { Some(memo_str) };
+            let memo = if memo_str.is_empty() {
+                None
+            } else {
+                Some(memo_str)
+            };
 
             recipients.push(Recipient {
                 address,
@@ -353,9 +358,14 @@ fn main() -> Result<()> {
                 "{}",
                 "───────────────────────────────────────────────────────────────".bright_black()
             );
-            println!("{}", "Intent JSON (for downstream tooling):".bright_white().bold());
-            let json = serde_json::to_string_pretty(&intent)
-                .context("failed to serialize intent")?;
+            println!(
+                "{}",
+                "Intent JSON (for downstream tooling):"
+                    .bright_white()
+                    .bold()
+            );
+            let json =
+                serde_json::to_string_pretty(&intent).context("failed to serialize intent")?;
             println!("{json}");
         }
         OutputMode::Agent => {

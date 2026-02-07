@@ -7,7 +7,7 @@ NOTE: This document focuses on what is implemented in this repository. Any futur
 ### laminar-core (Rust crate)
 Stateless core logic that implements:
 - CSV amount parsing into zatoshis (u64 only)
-- Address validation (prefix-only in this tracer bullet)
+- Address validation (network-aware prefixes + ASCII guardrails in this tracer bullet)
 - Shared data types for intent output
 
 ### laminar-cli (Rust binary)

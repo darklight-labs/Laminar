@@ -24,7 +24,7 @@ These are the non-negotiable rules for the tracer-bullet implementation. The bro
 - Agent mode is non-interactive and emits JSON only.
 
 ## FR-701 Human Readable Output
-- ASCII tables with aligned columns
+- UTF-8 tables with aligned columns
 - Colors for status
 - Amounts formatted as ZEC
 

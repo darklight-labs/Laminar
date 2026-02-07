@@ -1,4 +1,4 @@
-﻿#!/usr/bin/env bash
+#!/usr/bin/env bash
 # Demo script for running human and agent modes end-to-end.
 set -euo pipefail
 
