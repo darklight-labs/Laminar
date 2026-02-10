@@ -1,0 +1,6 @@
+[workspace]
+members = [
+  "crates/laminar-core",
+  "crates/laminar-cli",
+]
+resolver = "2"

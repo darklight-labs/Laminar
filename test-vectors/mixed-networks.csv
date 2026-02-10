@@ -1,0 +1,4 @@
+network,address,amount,memo
+mainnet,u1main0001,1000,main
+testnet,utest1sample0001,2000,test
+regtest,uregtest0001,3000,reg

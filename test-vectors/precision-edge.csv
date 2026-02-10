@@ -1,0 +1,4 @@
+address,amount,memo
+u1edge0001,1,min
+u1edge0002,2100000000000000,max-ish
+u1edge0003,999999999999999,near-max
