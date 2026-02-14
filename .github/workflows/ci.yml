@@ -190,6 +190,12 @@ jobs:
       - name: Install Tauri CLI
         run: cargo install tauri-cli --locked --version "^2.0.0"
 
-      - name: Build Tauri desktop app
+      - name: Build Tauri desktop app (compile check only, Linux/macOS)
+        if: runner.os != 'Windows'
         working-directory: desktop
-        run: npm run tauri build -- --debug
+        run: npm run tauri build -- --debug --bundles none
+
+      - name: Build Tauri desktop app (Windows bundle smoke)
+        if: runner.os == 'Windows'
+        working-directory: desktop
+        run: npm run tauri build -- --debug --bundles nsis
