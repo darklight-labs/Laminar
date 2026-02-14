@@ -1,2 +1,3 @@
-address,amount,memo
-u1amount0001,-5,bad-amount
+address,amount,memo,label
+t1Hsc1LR8yKnbbe3twRp88p6vFfC5t7DLbs,0.1,ok,valid-row
+t3JZcvsuaXE6ygokL4XUiZSTrQBUoPYFnXJ,-0.5,negative-amount,broken-row

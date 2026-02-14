@@ -1,4 +1,4 @@
-address,amount,memo
-u1edge0001,1,min
-u1edge0002,2100000000000000,max-ish
-u1edge0003,999999999999999,near-max
+address,amount,memo,label
+t1Hsc1LR8yKnbbe3twRp88p6vFfC5t7DLbs,0.00000001,dust-threshold,edge-dust
+t3JZcvsuaXE6ygokL4XUiZSTrQBUoPYFnXJ,21000000,max-supply,edge-max
+zs1qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqpq6d8g,0.12345678,eight-decimals,edge-precision

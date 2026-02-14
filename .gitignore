@@ -1,6 +1,13 @@
-/target
+**/target/
 **/*.rs.bk
 /.idea
 /.vscode
 .DS_Store
 Thumbs.db
+
+# Node / frontend artifacts
+**/node_modules/
+**/dist/
+
+# Local build outputs
+/out/

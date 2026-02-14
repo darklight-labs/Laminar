@@ -18,4 +18,8 @@ qrcode = "0.14"
 ur = "0.4"
 sha2 = "0.10"
 base64 = "0.22"
-image = "0.25"
+image = { version = "0.25", default-features = false, features = ["png"] }
+
+[dev-dependencies]
+rqrr = "0.10.1"
+proptest = "1"

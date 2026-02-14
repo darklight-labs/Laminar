@@ -1,3 +1,4 @@
-address,amount,memo
-u1unicode0001,1234,Payment for cafe ?
-u1unicode0002,5678,??????
+address,amount,memo,label
+t1Hsc1LR8yKnbbe3twRp88p6vFfC5t7DLbs,1.25,??????,japanese
+t3JZcvsuaXE6ygokL4XUiZSTrQBUoPYFnXJ,2.5,Pago de n?mina espa?ol,spanish
+zs1qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqpq6d8g,3.75,??????? ?? ???????,russian

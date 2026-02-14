@@ -1,2 +1,3 @@
-address,amount,memo
-not-a-zcash-address,1000,bad-address
+address,amount,memo,label
+t1Hsc1LR8yKnbbe3twRp88p6vFfC5t7DLbs,0.1,ok,valid-row
+not-a-zcash-address,0.2,bad-address,broken-row

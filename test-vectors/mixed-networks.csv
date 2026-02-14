@@ -1,4 +1,4 @@
-network,address,amount,memo
-mainnet,u1main0001,1000,main
-testnet,utest1sample0001,2000,test
-regtest,uregtest0001,3000,reg
+address,amount,memo,label
+t1Hsc1LR8yKnbbe3twRp88p6vFfC5t7DLbs,0.1,mainnet-recipient,row-1
+tm9iMLAuYMzJ6jtFLcA7rzUmfreGuKvr7Ma,0.2,testnet-recipient,row-2
+ztestsapling1qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqfhgwqu,0.3,testnet-sapling,row-3

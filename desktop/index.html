@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Laminar</title>
+    <style>
+      html,
+      body {
+        margin: 0;
+        width: 100%;
+        height: 100%;
+        background: #08080a;
+        color: #e8e8ec;
+        font-family: "IBM Plex Mono", "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      }
+
+      #root {
+        min-height: 100%;
+      }
+
+      #boot-splash {
+        position: fixed;
+        inset: 0;
+        display: grid;
+        place-items: center;
+        z-index: 9999;
+        background: radial-gradient(circle at 15% 85%, rgb(0 230 118 / 0.12), transparent 42%),
+          radial-gradient(circle at 85% 15%, rgb(68 138 255 / 0.12), transparent 36%), #08080a;
+        transition: opacity 180ms ease;
+      }
+
+      #boot-splash.hidden {
+        opacity: 0;
+        pointer-events: none;
+      }
+
+      #boot-splash-shell {
+        border: 1px solid #2a2a34;
+        border-radius: 8px;
+        padding: 22px 26px;
+        background: rgb(14 14 18 / 0.92);
+        display: grid;
+        justify-items: center;
+        gap: 9px;
+      }
+
+      #boot-splash-spinner {
+        width: 30px;
+        height: 30px;
+        border-radius: 999px;
+        border: 2px solid #2a2a34;
+        border-top-color: #00e676;
+        border-right-color: rgb(0 230 118 / 0.6);
+        animation: laminar-spin 780ms linear infinite;
+      }
+
+      #boot-splash-title {
+        margin: 0;
+        font-size: 12px;
+        font-weight: 600;
+        letter-spacing: 1.8px;
+        text-transform: uppercase;
+      }
+
+      #boot-splash-detail {
+        margin: 0;
+        font-size: 10px;
+        color: #8a8a98;
+        letter-spacing: 0.8px;
+        text-transform: uppercase;
+      }
+
+      @keyframes laminar-spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div id="boot-splash" aria-live="polite" aria-busy="true">
+      <div id="boot-splash-shell">
+        <div id="boot-splash-spinner" aria-hidden="true"></div>
+        <p id="boot-splash-title">Initializing Laminar</p>
+        <p id="boot-splash-detail">Preparing secure local runtime...</p>
+      </div>
+    </div>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
