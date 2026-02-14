@@ -60,22 +60,6 @@ laminar-cli generate <file> --network <mainnet|testnet> [--output-dir <dir>]
 laminar-cli --output json generate <file> --network mainnet --output-dir ./out
 ```
 
-## Desktop Screenshots
-Placeholders:
-
-- `docs/screenshots/import.png`
-- `docs/screenshots/review.png`
-- `docs/screenshots/qr.png`
-- `docs/screenshots/receipt.png`
-
-Example markdown:
-```md
-![Import Screen](docs/screenshots/import.png)
-![Review Screen](docs/screenshots/review.png)
-![QR Screen](docs/screenshots/qr.png)
-![Receipt Screen](docs/screenshots/receipt.png)
-```
-
 ## Build Instructions
 ## Workspace checks
 ```bash
@@ -90,16 +74,16 @@ cd desktop
 npx tauri build
 ```
 
-Bundle targets are configured in `desktop/src-tauri/tauri.conf.json`:
+Bundle targets are configured in [desktop/src-tauri/tauri.conf.json](desktop/src-tauri/tauri.conf.json):
 
 - macOS: DMG (minimum 10.15)
 - Windows: NSIS
 - Linux: AppImage, `.deb`, `.rpm`
 
 ## Release tooling
-- release gates: `scripts/release-check.sh`
-- versioning + artifacts + checksums + signed tag: `scripts/release.sh <version>`
-- Homebrew formula template: `docs/homebrew/laminar.rb`
+- [Release gates script](scripts/release-check.sh)
+- [Release script](scripts/release.sh) (`scripts/release.sh <version>`)
+- [Homebrew formula template](docs/homebrew/laminar.rb)
 
 ## Architecture Overview
 ## Core types
@@ -113,8 +97,9 @@ Bundle targets are configured in `desktop/src-tauri/tauri.conf.json`:
 - `agent`: deterministic JSON output, non-blocking automation path
 
 ## Documentation Index
-- Field manual: `docs/FIELD_MANUAL.md`
-- Agent integration guide: `docs/AGENT_INTEGRATION.md`
+- [Field Manual](docs/FIELD_MANUAL.md)
+- [Agent Integration Guide](docs/AGENT_INTEGRATION.md)
+- [Homebrew Formula Template](docs/homebrew/laminar.rb)
 
 ## License
 Licensed under either:
