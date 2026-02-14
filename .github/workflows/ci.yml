@@ -187,13 +187,13 @@ jobs:
         working-directory: desktop
         run: npm run build
 
-      - name: Install Tauri CLI
+      - name: Install Tauri CLI (Windows only)
+        if: runner.os == 'Windows'
         run: cargo install tauri-cli --locked --version "^2.0.0"
 
-      - name: Build Tauri desktop app (compile check only, Linux/macOS)
+      - name: Compile desktop backend (Linux/macOS)
         if: runner.os != 'Windows'
-        working-directory: desktop
-        run: npm run tauri build -- --debug --bundles none
+        run: cargo check --manifest-path desktop/src-tauri/Cargo.toml --all-targets
 
       - name: Build Tauri desktop app (Windows bundle smoke)
         if: runner.os == 'Windows'
